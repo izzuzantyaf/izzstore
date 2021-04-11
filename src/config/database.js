@@ -14,9 +14,8 @@ pool
     console.error(err.message)
   })
 
-exports.query = (query, params) => {
-  pool.query(query, params)
-}
+exports.query = (query, params) => pool.query(query, params)
+
 
 exports.setup = () => {
   // setup tables
