@@ -4,12 +4,13 @@ const tables = require('./tables')
 
 dotenv.config()
 
-const pool = new Pool({
+const config = {
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-})
+}
+
+if (process.env.NODE_ENV === 'production') config.ssl = { rejectUnauthorized: false }
+
+const pool = new Pool(config)
 
 pool
   .on('connect', () => { })

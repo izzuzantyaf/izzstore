@@ -1,6 +1,6 @@
 const app = require('./src/app')
 const db = require('./src/config/database')
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8000
 
 db.setup()
 
