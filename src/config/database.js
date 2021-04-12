@@ -14,12 +14,9 @@ const pool = new Pool(config)
 
 pool
   .on('connect', () => { })
-  .on('error', (err) => {
-    console.error(err.message)
-  })
+  .on('error', (err) => { console.error(err.message) })
 
 exports.query = (query, params) => pool.query(query, params)
-
 
 exports.setup = () => {
   // setup tables
