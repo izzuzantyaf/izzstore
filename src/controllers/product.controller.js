@@ -3,17 +3,17 @@ const faker = require('faker')
 faker.locale = 'id_ID'
 
 exports.createProduct = async (req, res) => {
-  // const { productName, quantity, price } = req.body
-  const productName = faker.commerce.productName()
-  const quantity = faker.datatype.number(20)
-  const price = faker.commerce.price(5, 100)
+  const { name, quantity, price } = req.body
+  // const name = faker.commerce.name()
+  // const quantity = faker.datatype.number(20)
+  // const price = faker.commerce.price(5, 100)
 
-  await db.query('INSERT INTO products (name, quantity, price) VALUES ($1, $2, $3)', [productName, quantity, price])
+  await db.query('INSERT INTO products (name, quantity, price) VALUES ($1, $2, $3)', [name, quantity, price])
 
   res.status(201).send({
     message: 'Product added successfully!',
     addedProduct: {
-      productName, quantity, price
+      name, quantity, price
     }
   })
 }
@@ -31,11 +31,11 @@ exports.findProductById = async (req, res) => {
 
 exports.updateProductById = async (req, res) => {
   const productId = parseInt(req.params.id)
-  const { productName, quantity, price } = req.body
+  const { name, quantity, price } = req.body
 
   await db.query(
     "UPDATE products SET name = $1, quantity = $2, price = $3 WHERE id = $4",
-    [productName, quantity, price, productId]
+    [name, quantity, price, productId]
   )
 
   res.status(200).send({ message: "Product Updated Successfully!" })
