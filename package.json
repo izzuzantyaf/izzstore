@@ -10,9 +10,6 @@
     "build:client": "next build",
     "start:client": "next start"
   },
-  "engines": {
-    "node": "14.x"
-  },
   "author": "Izzu Zantya Fawwas",
   "license": "MIT",
   "devDependencies": {
