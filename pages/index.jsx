@@ -17,7 +17,7 @@ function HomePage() {
     const productId = parseInt(deleteBtnEl.parentElement.querySelector('input.product_id').value)
       ; (async () => {
         const response = await
-          fetch(process.env.ENDPOINT_URL || 'http://localhost:8000/api/products/' + productId, {
+          fetch('https://izzstore.herokuapp.com/api/products/' + productId, {
             method: 'DELETE',
           })
             .then(res => res.json())
@@ -33,7 +33,7 @@ function HomePage() {
 
       ; (async () => {
         const response = await
-          fetch(process.env.ENDPOINT_URL || 'http://localhost:8000/api/products', {
+          fetch('https://izzstore.herokuapp.com/api/products', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ function HomePage() {
     for (let [key, value] of editProductForm.entries()) newProduct[key] = value
 
       ; (async () => {
-        const response = await fetch(process.env.ENDPOINT_URL || 'http://localhost:8000/api/products/' + productId, {
+        const response = await fetch('https://izzstore.herokuapp.com/api/products/' + productId, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ function HomePage() {
 
     ; (async () => {
       // show all products
-      const data = await fetch(process.env.ENDPOINT_URL || 'http://localhost:8000/api/products')
+      const data = await fetch('https://izzstore.herokuapp.com/api/products')
         .then((res) => res.json())
       setProducts(data)
     })()
