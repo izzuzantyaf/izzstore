@@ -13,13 +13,14 @@ function HomePage() {
     console.info('randomize product success')
   }
 
-  function deleteProduct(productId) {
+  function deleteProduct(deleteBtnEl) {
+    const productId = parseInt(deleteBtnEl.parentElement.querySelector('input.product_id').value);
     (async () => {
       const response = await fetch('https://izzstore.herokuapp.com/api/products/' + productId, {
         method: 'DELETE',
       })
         .then(res => res.json())
-      console.log(response)
+      console.info(response)
       setProducts(products => products.filter(product => product.id !== response.productId))
     })()
   }
@@ -50,38 +51,14 @@ function HomePage() {
 
   useEffect(() => {
 
-    let deleteProductBtnArr = [];
-
     (async () => {
       // show all products
       const data = await fetch('https://izzstore.herokuapp.com/api/products')
         .then((res) => res.json())
       setProducts(data)
-
-      deleteProductBtnArr = Array.from(document.querySelectorAll('button.delete_product_btn'))
-      deleteProductBtnArr.forEach(deleteProductBtn => {
-        const productId = parseInt(deleteProductBtn.parentElement.querySelector('input.product_id').value);
-        deleteProductBtn.addEventListener('click', () => deleteProduct(productId))
-      })
     })()
 
-    // hydrate randomize product button
-    const randomBtn = document.querySelector('button[name="randomize_input_product"]')
-    randomBtn.addEventListener('click', randomizeProduct)
-
-    // add new product
-    const addProductBtn = document.querySelector('button[name="add_product_btn"')
-    addProductBtn.addEventListener('click', addNewProduct)
-
-    console.log('useEffect run')
-
-    return () => {
-      randomBtn.removeEventListener('click', randomizeProduct)
-      addProductBtn.removeEventListener('click', addNewProduct)
-      deleteProductBtnArr.forEach(deleteProductBtn => {
-        deleteProductBtn.removeEventListener('click', () => { })
-      })
-    }
+    return () => { }
   }, [])
 
   return (
@@ -93,7 +70,7 @@ function HomePage() {
             <div key={index}>
               <input type="hidden" className="product_id" value={product.id} />
               <p style={{ display: 'inline' }}>{`${index + 1}. ${product.name} - ${product.quantity} - $${product.price}`}</p>
-              <button style={{ display: 'inline', color: 'red' }} className="delete_product_btn" type="button">delete</button>
+              <button style={{ display: 'inline', color: 'red' }} className="delete_product_btn" type="button" onClick={(e) => deleteProduct(e.target)}>delete</button>
             </div>) : 'Loading data...'
         }
       </div>
@@ -102,9 +79,9 @@ function HomePage() {
           <input type="text" name="name" placeholder="Product name" required />
           <input type="number" name="quantity" placeholder="Quantity" required />
           <input type="number" name="price" placeholder="Price" required />
-          <button name="add_product_btn" type="button">Add</button>
+          <button name="add_product_btn" type="button" onClick={addNewProduct}>Add</button>
         </form>
-        <button name="randomize_input_product" type="button">Randomize input</button>
+        <button name="randomize_input_product" type="button" onClick={randomizeProduct}>Randomize input</button>
       </div>
     </div>
   )
