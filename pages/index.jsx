@@ -41,10 +41,7 @@ function HomePage() {
             body: JSON.stringify(newProduct)
           })
             .then((res) => res.json())
-            .catch((err) => { console.error(err) })
-
         console.log(response)
-
         setProducts(products => [...products, response.addedProduct])
       })()
   }
@@ -54,11 +51,11 @@ function HomePage() {
     editBtnEl.parentElement.querySelector('button.cancel_product_btn').classList.toggle('hidden')
     editBtnEl.parentElement.querySelector('button.save_product_btn').classList.toggle('hidden')
     // show edit product field
-    editBtnEl.parentElement.querySelector('.edit_product_form').style.display = 'grid'
+    editBtnEl.parentElement.querySelector('.edit_product_form').classList.replace('hidden', 'grid')
     // hide current product data
-    editBtnEl.parentElement.querySelector('.product_name').style.display = 'none'
-    editBtnEl.parentElement.querySelector('.product_quantity').style.display = 'none'
-    editBtnEl.parentElement.querySelector('.product_price').style.display = 'none'
+    editBtnEl.parentElement.querySelector('.product_name').classList.toggle('hidden')
+    editBtnEl.parentElement.querySelector('.product_quantity').classList.toggle('hidden')
+    editBtnEl.parentElement.querySelector('.product_price').classList.toggle('hidden')
     // hide edit button
     editBtnEl.classList.toggle('hidden')
     // hide delete button
@@ -70,11 +67,11 @@ function HomePage() {
     cancelBtnEl.classList.toggle('hidden')
     cancelBtnEl.parentElement.querySelector('button.save_product_btn').classList.toggle('hidden')
     // hide edit product field
-    cancelBtnEl.parentElement.querySelector('.edit_product_form').style.display = 'none'
+    cancelBtnEl.parentElement.querySelector('.edit_product_form').classList.replace('grid', 'hidden')
     // show current product data
-    cancelBtnEl.parentElement.querySelector('.product_name').style.display = 'inline'
-    cancelBtnEl.parentElement.querySelector('.product_quantity').style.display = 'inline'
-    cancelBtnEl.parentElement.querySelector('.product_price').style.display = 'inline'
+    cancelBtnEl.parentElement.querySelector('.product_name').classList.toggle('hidden')
+    cancelBtnEl.parentElement.querySelector('.product_quantity').classList.toggle('hidden')
+    cancelBtnEl.parentElement.querySelector('.product_price').classList.toggle('hidden')
     // show edit button
     cancelBtnEl.parentElement.querySelector('button.edit_product_btn').classList.toggle('hidden')
     // show delete button
@@ -105,7 +102,6 @@ function HomePage() {
             cancelEditProduct(saveBtnEl.parentElement.querySelector('button.cancel_product_btn'))
             return res.json()
           })
-          .catch(err => { console.error(err) })
         console.log(response)
       })()
   }
@@ -113,7 +109,7 @@ function HomePage() {
   useEffect(() => {
 
     ; (async () => {
-      // show all products
+      // fetch products data from api
       const data = await
         fetch('https://izzstore.herokuapp.com/api/products')
           .then((res) => res.json())
@@ -127,13 +123,24 @@ function HomePage() {
     <div className="homepage p-6 text-sm">
       <div className="space-y-6 container mx-auto max-w-screen-md">
         <div className="title font-black text-3xl">Store</div>
+
+        <div className="input_product_section grid grid-cols-12 gap-2">
+          <form action="" method="post" className="add_product_form col-span-full grid grid-cols-12 gap-2">
+            <button name="randomize_input_product" className="col-start-9 col-span-2 text-blue-500 rounded-md py-1" type="button" onClick={e => randomizeProduct(e.target)}>Random</button>
+            <button name="add_product_btn" className="bg-blue-500 text-white font-bold rounded-md px-3 py-1 col-start-11 col-span-2" type="button" onClick={e => addNewProduct(e.target)}>Add</button>
+            <input type="text" name="name" className="px-1 border rounded col-span-8" placeholder="Product name" required />
+            <input type="number" name="quantity" className="px-1 border rounded col-span-2" placeholder="Quantity" required />
+            <input type="number" name="price" className="px-1 border rounded col-span-2" placeholder="Price" required />
+          </form>
+        </div>
+
         <div className="product-list space-y-3">
           {
             products.length ? products.map((product, index) =>
               <div key={index} className="grid grid-cols-12 gap-2">
                 <input type="hidden" className="product_id" value={product.id} />
 
-                <form className="edit_product_form col-span-10 grid grid-cols-10 gap-2" style={{ display: 'none' }}>
+                <form className="edit_product_form col-span-10 hidden grid-cols-10 gap-2">
                   <input type="text" className="border rounded px-1 col-span-6" name="name" placeholder="Product name" defaultValue={product.name} required />
                   <input type="number" className="border rounded px-1 col-span-2" name="quantity" placeholder="Quantity" defaultValue={product.quantity} required />
                   <input type="number" className="border rounded px-1 col-span-2" name="price" placeholder="Price" defaultValue={product.price} required />
@@ -149,22 +156,12 @@ function HomePage() {
                   {`$${product.price}`}
                 </div>
 
-                <button className="cancel_product_btn col-span-1 hidden" onClick={(e) => cancelEditProduct(e.target)}>cancel</button>
+                <button className="cancel_product_btn col-span-1 hidden" onClick={(e) => cancelEditProduct(e.target)}>x</button>
                 <button className="save_product_btn col-span-1 hidden text-green-500" onClick={(e) => updateProduct(e.target)}>save</button>
                 <button className="edit_product_btn col-span-1 text-blue-500" onClick={(e) => editProduct(e.target)}>edit</button>
                 <button className="delete_product_btn col-span-1 text-red-500" type="button" onClick={(e) => deleteProduct(e.target)}>del</button>
               </div>) : 'Loading data...'
           }
-        </div>
-
-        <div className="input_product_section grid grid-cols-12 gap-2">
-          <form action="" method="post" className="add_product_form col-span-full grid grid-cols-12 gap-2">
-            <input type="text" name="name" className="px-1 border rounded col-span-6" placeholder="Product name" required />
-            <input type="number" name="quantity" className="px-1 border rounded col-span-2" placeholder="Quantity" required />
-            <input type="number" name="price" className="px-1 border rounded col-span-2" placeholder="Price" required />
-            <button name="add_product_btn" className="bg-blue-500 text-white rounded-md px-3 py-1 col-span-2" type="button" onClick={e => addNewProduct(e.target)}>Add</button>
-          </form>
-          <button name="randomize_input_product" className="col-span-full" type="button" onClick={e => randomizeProduct(e.target)}>Randomize input</button>
         </div>
 
       </div>
