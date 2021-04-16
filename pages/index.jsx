@@ -149,9 +149,9 @@ function HomePage() {
                   {`$${product.price}`}
                 </div>
 
-                <button className="cancel_product_btn col-span-1 hidden" onClick={(e) => { cancelEditProduct(e.target) }}>cancel</button>
-                <button className="save_product_btn col-span-1 hidden text-green-500" onClick={(e) => { updateProduct(e.target) }}>save</button>
-                <button className="edit_product_btn col-span-1 text-blue-500" onClick={(e) => { editProduct(e.target) }}>edit</button>
+                <button className="cancel_product_btn col-span-1 hidden" onClick={(e) => cancelEditProduct(e.target)}>cancel</button>
+                <button className="save_product_btn col-span-1 hidden text-green-500" onClick={(e) => updateProduct(e.target)}>save</button>
+                <button className="edit_product_btn col-span-1 text-blue-500" onClick={(e) => editProduct(e.target)}>edit</button>
                 <button className="delete_product_btn col-span-1 text-red-500" type="button" onClick={(e) => deleteProduct(e.target)}>del</button>
               </div>) : 'Loading data...'
           }
